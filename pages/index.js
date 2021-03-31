@@ -1,10 +1,7 @@
 export default function Home({ photos }) {
   return (
     <div className="p-20">
-      <div
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
-        style={{ gridTemplateRows: "masonry" }}
-      >
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {photos.map((photo) => (
           <Image url={photo.file.formats.large.url} key={photo.id} />
         ))}
