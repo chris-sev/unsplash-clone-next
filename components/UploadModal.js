@@ -88,11 +88,10 @@ function UploadDropzone(props) {
 
     var formdata = new FormData();
     formdata.append("data", '{"description": "hi from postman"}');
-    formdata.append("files.file", files[0], "dog6.jpeg");
+    formdata.append("files.file", files[0], files[0].name);
 
     fetch("http://localhost:1337/photos", {
       method: "POST",
-      headers: { "Content-Type": "application/form-data" },
       body: formdata,
     });
   }
