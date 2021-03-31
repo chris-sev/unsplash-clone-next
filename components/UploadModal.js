@@ -50,12 +50,6 @@ export default function UploadModal() {
   );
 }
 
-function encode(data) {
-  const formData = new FormData();
-  Object.keys(data).forEach((key) => formData.set(key, data[key]));
-  return formData;
-}
-
 function UploadDropzone(props) {
   const [files, setFiles] = useState([]);
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
@@ -81,24 +75,43 @@ function UploadDropzone(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
-
-    // const data = encode({ description: "my doggo 2", data: files[0] });
-
-    console.log(files);
-
-    var formdata = new FormData();
-    formdata.append("data", '{"description": "hi from postman"}');
-    formdata.append("files.file", files[0], "dog6.jpeg");
-
+  
+    // Got the code from 
+    // https://strapi.io/documentation/developer-docs/latest/development/plugins/upload.html#upload-file-during-entry-creation
+    // and switched it to fetch, since we were using that during the livestream. 
+    const formData = new FormData();
+  
+    const formElements = document.getElementById("upload-form").elements;
+    const data = {};
+  
+    for (let i = 0; i < formElements.length; i++) {
+      const currentElement = formElements[i];
+      if (!['submit', 'file'].includes(currentElement.type)) {
+        data[currentElement.name] = currentElement.value;
+      } else if (currentElement.type === 'file') {
+        if (currentElement.files.length === 1) {
+          const file = currentElement.files[0];
+          formData.append(`files.${currentElement.name}`, file, file.name);
+        } else {
+          for (let i = 0; i < currentElement.files.length; i++) {
+            const file = currentElement.files[i];
+  
+            formData.append(`files.${currentElement.name}`, file, file.name);
+          }
+        }
+      }
+    }
+  
+    formData.append('data', JSON.stringify(data));
+  
     fetch("http://localhost:1337/photos", {
       method: "POST",
-      headers: { "Content-Type": "application/form-data" },
-      body: formdata,
+      body: formData,
     });
   }
 
   return (
-    <form className="h-full flex flex-col" onSubmit={handleSubmit}>
+    <form className="h-full flex flex-col" id="upload-form" onSubmit={handleSubmit}>
       {/* this is the dropzone */}
       <div
         {...getRootProps({
