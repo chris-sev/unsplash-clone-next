@@ -75,15 +75,15 @@ function UploadDropzone(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
-  
+
     // Got the code from 
     // https://strapi.io/documentation/developer-docs/latest/development/plugins/upload.html#upload-file-during-entry-creation
     // and switched it to fetch, since we were using that during the livestream. 
     const formData = new FormData();
-  
+
     const formElements = document.getElementById("upload-form").elements;
     const data = {};
-  
+
     for (let i = 0; i < formElements.length; i++) {
       const currentElement = formElements[i];
       if (!['submit', 'file'].includes(currentElement.type)) {
@@ -95,15 +95,15 @@ function UploadDropzone(props) {
         } else {
           for (let i = 0; i < currentElement.files.length; i++) {
             const file = currentElement.files[i];
-  
+
             formData.append(`files.${currentElement.name}`, file, file.name);
           }
         }
       }
     }
-  
+
     formData.append('data', JSON.stringify(data));
-  
+
     fetch("http://localhost:1337/photos", {
       method: "POST",
       body: formData,
@@ -119,7 +119,7 @@ function UploadDropzone(props) {
             "relative flex-1 flex items-center justify-center border-2 border-dashed border-gray-200 rounded-lg py-5 px-10 text-center bg-gray-100 text-gray-600 cursor-pointer hover:bg-blue-100 hover:border-blue-400 hover:text-blue-700 transition duration-200",
         })}
       >
-        <input {...getInputProps()} />
+        <input name="file" {...getInputProps()} />
         <p>Drag 'n' drop some files here, or click to select files</p>
 
         {/* image preview */}
@@ -133,6 +133,8 @@ function UploadDropzone(props) {
           ))}
         </div>
       </div>
+
+      <input type="text" name="description" placeholder="Description" className="mt-4 px-3 py-2 border border-gray-200" />
 
       {/* submit button */}
       <button
