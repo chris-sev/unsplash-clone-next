@@ -1,4 +1,5 @@
 import "tailwindcss/tailwind.css";
+import SiteFooter from "../components/SiteFooter";
 import SiteHeader from "../components/SiteHeader";
 
 function MyApp({ Component, pageProps }) {
@@ -6,6 +7,7 @@ function MyApp({ Component, pageProps }) {
     <>
       <SiteHeader />
       <Component {...pageProps} />
+      <SiteFooter />
     </>
   );
 }
