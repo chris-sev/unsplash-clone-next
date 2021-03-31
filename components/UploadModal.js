@@ -50,6 +50,12 @@ export default function UploadModal() {
   );
 }
 
+function encode(data) {
+  const formData = new FormData();
+  Object.keys(data).forEach((key) => formData.set(key, data[key]));
+  return formData;
+}
+
 function UploadDropzone(props) {
   const [files, setFiles] = useState([]);
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
@@ -73,13 +79,26 @@ function UploadDropzone(props) {
     [files]
   );
 
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const body = encode({ description: "my doggo 2", data: files[0] });
+
+    console.log(files);
+
+    fetch("http://localhost:1337/photos", {
+      method: "POST",
+      body,
+    });
+  }
+
   return (
-    <>
+    <form className="h-full flex flex-col" onSubmit={handleSubmit}>
       {/* this is the dropzone */}
       <div
         {...getRootProps({
           className:
-            "relative flex-1 flex items-center justify-center border-2 border-dashed border-gray-200 rounded-lg px-10 text-center bg-gray-100 text-gray-600 cursor-pointer hover:bg-blue-100 hover:border-blue-400 hover:text-blue-700 transition duration-200",
+            "relative flex-1 flex items-center justify-center border-2 border-dashed border-gray-200 rounded-lg py-5 px-10 text-center bg-gray-100 text-gray-600 cursor-pointer hover:bg-blue-100 hover:border-blue-400 hover:text-blue-700 transition duration-200",
         })}
       >
         <input {...getInputProps()} />
@@ -96,6 +115,14 @@ function UploadDropzone(props) {
           ))}
         </div>
       </div>
-    </>
+
+      {/* submit button */}
+      <button
+        type="submit"
+        className="mt-8 flex-shrink w-full bg-blue-400 text-blue-50 text-xl py-4 px-20 rounded-lg font-medium"
+      >
+        Upload
+      </button>
+    </form>
   );
 }
