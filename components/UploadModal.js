@@ -82,13 +82,20 @@ function UploadDropzone(props) {
   function handleSubmit(e) {
     e.preventDefault();
 
-    const body = encode({ description: "my doggo 2", data: files[0] });
+    // const data = encode({ description: "my doggo 2", data: files[0] });
 
     console.log(files);
 
+    const formData = new FormData();
+    formData.append("file", files[0]);
+
     fetch("http://localhost:1337/photos", {
       method: "POST",
-      body,
+      headers: { "Content-Type": "application/form-data" },
+      body: {
+        files: { file: formData },
+        data: JSON.stringify({ description: "my doggo" }),
+      },
     });
   }
 
