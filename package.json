@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "start-do": "next start -H 0.0.0.0 -p ${PORT:-8080}",
+    "export": "next build && next export"
   },
   "dependencies": {
     "@tailwindcss/jit": "^0.1.18",
