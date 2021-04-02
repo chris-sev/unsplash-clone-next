@@ -22,7 +22,7 @@ function Image({ url }) {
         <div className="absolute h-full w-full -right-3 -bottom-3 bg-black rounded-lg transform group-hover:-translate-x-2 group-hover:-translate-y-2 transition duration-200"></div>
 
         <img
-          src={`http://localhost:1337${url}`}
+          src={`https://unsplash-clone-strapi-2-3ej7k.ondigitalocean.app${url}`}
           className="relative rounded-lg"
         />
       </div>
@@ -31,7 +31,9 @@ function Image({ url }) {
 }
 
 export async function getStaticProps() {
-  const res = await fetch("http://localhost:1337/photos");
+  const res = await fetch(
+    "https://unsplash-clone-strapi-2-3ej7k.ondigitalocean.app/photos"
+  );
   const photos = await res.json();
 
   return { props: { photos } };
