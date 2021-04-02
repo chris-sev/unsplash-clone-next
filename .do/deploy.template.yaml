@@ -5,7 +5,7 @@ spec:
       build_command: npm run build
       run_command: npm run start-do
       git:
-        branch: master
+        branch: main
         repo_clone_url: https://github.com/chris-on-code/unsplash-clone-next.git
       envs:
         - key: API_URL
