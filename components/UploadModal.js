@@ -43,17 +43,11 @@ export default function UploadModal() {
           <h2 className="flex-shrink text-4xl font-extrabold mb-7">
             Upload Your Photo
           </h2>
-          <UploadDropzone />
+          <UploadDropzone closeMe={closeModal} />
         </div>
       </Modal>
     </>
   );
-}
-
-function encode(data) {
-  const formData = new FormData();
-  Object.keys(data).forEach((key) => formData.set(key, data[key]));
-  return formData;
 }
 
 function UploadDropzone(props) {
@@ -83,13 +77,17 @@ function UploadDropzone(props) {
     e.preventDefault();
 
     const formdata = new FormData();
-    formdata.append("data", '{"description": "hi from postman"}');
-    formdata.append("files.file", files[0], "dog6.jpeg");
+    formdata.append("data", '{}');
+    formdata.append("files.file", files[0], files[0].name);
 
     fetch("http://localhost:1337/photos", {
       method: "POST",
       body: formdata,
-    });
+    }).then(result => {
+      console.log(result);
+      console.log(props);
+      props.closeMe();
+    })
   }
 
   return (
